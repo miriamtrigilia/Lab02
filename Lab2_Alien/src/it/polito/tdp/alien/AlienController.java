@@ -40,15 +40,50 @@ public class AlienController {
     	
     }
   
+    private AlienDictionary diz = new AlienDictionary();
+    
     
     @FXML
     void doTranslate(ActionEvent event) {
-    	    	
+    	
+    	String p = txtWord.getText();
+    	
+    	// controllo parola non inserita
+    	if(txtWord.getText().length()==0) {
+    		txtResult.setText("Inserire parola/e\n");
+    	}
+    	
+    if(p.contains(" ")) {
+    	String array[] = p.split(" ");
+    	diz.addWord(array[0], array[1]);
+	if(!array[0].matches("[a-zA-Z]*") || !array[1].matches("[a-zA-Z]*")) {
+		txtResult.setText("E' stata inserita una parola con un carattere non valido\n");
+		return;
+	}
+	WordEnhanced w = new WordEnhanced(array[0]);
+    	w.setTranslation(array[1]);
+	txtWord.clear();
+	txtResult.appendText("\n"+w);
+    	}
+    	else {
+    		// controllo caratteri
+    		if(!p.matches("[a-zA-Z]*")) {
+    			txtResult.setText("E' stata inserita una parola con un carattere non valido\n");
+    			return;
+    		}
+    		
+    		String g=diz.translateWord(p);
+    		txtWord.clear();
+    		txtResult.appendText("\n"+g);
+    		
+    	}
+
     }
     
     
     @FXML
     void doReset(ActionEvent event) {
+    		txtResult.setText("Welcome to Alien Dictionary v2018.\n");
 
     }
     
